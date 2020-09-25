@@ -17,7 +17,7 @@ using namespace std;
     10   = zero
     00 = inst requires jumping to a label
 */
-//Unchecked Error: if format is right
+//Unchecked Error: if format is right, invalid regcode
 /*
 EXPECTED INPUT ASSEMBLY CODE:
 label1: opcode operand
@@ -54,16 +54,16 @@ void init()
     mot.resize(13);
 	mot[0] = {"ADD","00000001",31};
 	mot[1] = {"ADDI","00000010",42};
-	mot[2] = {"CMP","00000011",22};
+	mot[2] = {"CMP","00000011",31};
 	mot[3] = {"INC","00000100",11};
 	mot[4] = {"JEQ","00000101",00};
 	mot[5] = {"JMP","00000110",00};
-	mot[6] = {"LOAD","00000111",21};
+	mot[6] = {"LOAD","00000111",31};
 	mot[7] = {"LOADI","00001000",32};
-	mot[8] = {"MVI","00001001",32};
-	mot[9] = {"MOV","00001010",21};
+	mot[8] = {"MOVI","00001001",32};
+	mot[9] = {"MOV","00001010",31};
 	mot[10] = {"HLT","00001011",10};
-	mot[11] = {"STORE","00001100",21};
+	mot[11] = {"STORE","00001100",31};
 	mot[12] = {"STORI","00001101",32};
 }
 
@@ -185,12 +185,14 @@ int main(){
             outfile<<endl;
             continue;
         }
+        cout<<word<<endl;
         //find the inst in mot
         for(auto &e: mot){
             if(e.name==word){
                 found=true;
                 outfile<<e.bincode<<" ";
                 if(e.format==32){
+                    cout<<"here";
                     infile>>word;
                     r1=word;
                     outfile<<getRegCode(r1)<<" ";
@@ -249,8 +251,11 @@ int main(){
                     }
                 } 
             }
+            
+
         }
         if(!found){
+            cout<<word<<" ";
             cout<<"INVALID INSTRUCTION!!! EXITING..."<<endl;
             return 0;
         }
