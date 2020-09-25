@@ -1,4 +1,13 @@
-label: ADD R0 1
-label2: ADD r1 23
-JMP label
-stop: stopnow
+MOVI R0 5
+MOVI R1 2
+P1:
+CMP R0 R10
+JEQ C1
+P2:
+CMP R1 R10
+JEQ C2
+C1:
+INC R5
+C2:
+INC R6
+HLT
