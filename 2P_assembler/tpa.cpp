@@ -15,6 +15,20 @@ using namespace std;
     11   = add
     10   = zero
 */
+
+/*
+EXPECTED INPUT ASSEMBLY CODE:
+label1: opcode operand
+opcode operand
+label2: opcode operand
+HLT
+
+cannot be:
+label1:
+opcode operand
+
+*/
+
 struct mot_s{
     string name;
     string bincode;
@@ -71,6 +85,43 @@ vector<string> split(const std::string &txt, std::vector<std::string> &strs, cha
     return ans;
 }
 
+string getRegCode(string r){
+    if(r=="R0")
+        return "00000";
+    if(r=="R1")
+        return "00001";
+    if(r=="R2")
+        return "00010";
+    if(r=="R3")
+        return "00011";
+    if(r=="R4")
+        return "00100";
+    if(r=="R5")
+        return "00101";
+    if(r=="R6")
+        return "00110";
+    if(r=="R7")
+        return "00111";
+
+}
+
+//CHECK IF CONVERSION IS RIGHT
+string decToBinary(int n) 
+{ 
+    // counter for binary array 
+    int i = 0; 
+    string num;
+    char c;
+    while (n > 0) { 
+  
+        // storing remainder in binary array 
+        c=n%2;
+        num.insert(0, 1, c);
+        n = n / 2; 
+    } 
+    return num;
+} 
+
 int main(){
 
     init(); //Initialize the machine code before beginning
@@ -106,9 +157,52 @@ int main(){
     }
     file.close();
 
-    for(auto&e: SYMBOL_TABLE){
-        cout<<e.fi<<": "<<e.se<<endl;
+    //PASS 2
+    ifstream infile;
+    infile.open ("input.txt");
+    ofstream outfile;
+    outfile.open("otput.txt", ios::out | ios::trunc);
+
+    if (!infile.is_open()){
+        cout<<"ERROR! couldnt open input.txt";
+        return 0;
     }
-    
+    if(!outfile.is_open()){
+        cout<<"ERROR! couldnt open output.txt";
+        return 0;
+    }
+    string word;
+    while (infile >> word)
+    {
+        bool found=false;
+        string r1,r2,r3;
+        int imm_num;
+        if(word[word.size()-1]==':')
+            continue;
+        //find the inst in mot
+        for(auto &e: mot){
+            if(e.name==word){
+                found=true;
+                outfile<<e.bincode<<" ";
+                if(e.format==32){
+                    infile>>word;
+                    r1=word;
+                    outfile<<getRegCode(r1);
+                    infile>>word;
+                    imm_num=stoi(word);
+                    while(imm_num){
+
+                    }
+                }
+            }
+        }
+        if(!found){
+            cout<<"INVALID INSTRUCTION!!! EXITING..."<<endl;
+            return 0;
+        }
+    }
+    infile.close();
+    outfile.close();
+
     return 0;
 }
