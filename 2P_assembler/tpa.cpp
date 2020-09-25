@@ -8,14 +8,15 @@
 using namespace std;
 
 /*
-    32 = reg reg imm. addr.
-    31 = reg reg reg
-    22 = reg imm.
-    21  = reg reg
-    11   = add
+    42 = reg reg imm. addr.
+    41 = reg reg reg
+    32 = reg imm. addr.
+    31 = reg reg
+    
+    11   = addess
     10   = zero
 */
-
+//Unchecked Error: if format is right
 /*
 EXPECTED INPUT ASSEMBLY CODE:
 label1: opcode operand
@@ -51,7 +52,7 @@ void init()
     mot.clear();
     mot.resize(13);
 	mot[0] = {"ADD","00000001",31};
-	mot[1] = {"ADDI","00000010",32};
+	mot[1] = {"ADDI","00000010",42};
 	mot[2] = {"CMP","00000011",22};
 	mot[3] = {"INC","00000100",11};
 	mot[4] = {"JEQ","00000101",11};
@@ -102,7 +103,9 @@ string getRegCode(string r){
         return "00110";
     if(r=="R7")
         return "00111";
-
+    else
+        return "11111"; //CODE FOR INVALID REGISTER
+    
 }
 
 //CHECK IF CONVERSION IS RIGHT
@@ -177,8 +180,10 @@ int main(){
         bool found=false;
         string r1,r2,r3;
         int imm_num;
-        if(word[word.size()-1]==':')
+        if(word[word.size()-1]==':'){
+            outfile<<endl;
             continue;
+        }
         //find the inst in mot
         for(auto &e: mot){
             if(e.name==word){
@@ -187,13 +192,45 @@ int main(){
                 if(e.format==32){
                     infile>>word;
                     r1=word;
-                    outfile<<getRegCode(r1);
+                    outfile<<getRegCode(r1)<<" ";
                     infile>>word;
                     imm_num=stoi(word);
-                    while(imm_num){
-
-                    }
+                    outfile<<decToBinary(imm_num)<<endl;
                 }
+                else if(e.format==31){
+                    infile>>word;
+                    r1=word;
+                    outfile<<getRegCode(r1)<<" ";
+                    infile>>word;
+                    r2=word;
+                    outfile<<getRegCode(r2)<<endl;
+                }
+                else if(e.format==42){
+                    infile>>word;
+                    r1=word;
+                    infile>>word;
+                    r2=word;
+                    infile>>word;
+                    imm_num=stoi(word);
+                    outfile<<getRegCode(r1)<<" "<<getRegCode(r2)<<" "<<decToBinary(imm_num)<<endl;
+                }
+                else if(e.format==41){
+                    infile>>word;
+                    r1=word;
+                    infile>>word;
+                    r2=word;
+                    infile>>word;
+                    r3=word;
+                    outfile<<getRegCode(r1)<<" "<<getRegCode(r2)<<" "<<getRegCode(r3)<<endl;
+                }
+                else if(e.format==11){
+                    infile>>word;
+                    r1=word;
+                    outfile<<getRegCode(r1)<<endl;
+                }
+                else if(e.format==10){
+                    continue;
+                }  
             }
         }
         if(!found){
