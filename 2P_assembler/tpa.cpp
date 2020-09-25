@@ -15,6 +15,7 @@ using namespace std;
     
     11   = addess
     10   = zero
+    00 = inst requires jumping to a label
 */
 //Unchecked Error: if format is right
 /*
@@ -55,8 +56,8 @@ void init()
 	mot[1] = {"ADDI","00000010",42};
 	mot[2] = {"CMP","00000011",22};
 	mot[3] = {"INC","00000100",11};
-	mot[4] = {"JEQ","00000101",11};
-	mot[5] = {"JMP","00000110",11};
+	mot[4] = {"JEQ","00000101",00};
+	mot[5] = {"JMP","00000110",00};
 	mot[6] = {"LOAD","00000111",21};
 	mot[7] = {"LOADI","00001000",32};
 	mot[8] = {"MVI","00001001",32};
@@ -230,7 +231,23 @@ int main(){
                 }
                 else if(e.format==10){
                     continue;
-                }  
+                } 
+                else if(e.format==00){
+                    infile>>word;
+                    bool found_sym=false;
+                    //search for the word in symbol table
+                    for(auto &sym:SYMBOL_TABLE){
+                        if(sym.fi==e.name){
+                            found_sym=true;
+                            outfile<<sym.se;
+                            break;
+                        }
+                    }
+                    if(found_sym==false){
+                        cout<<"ERROR!!NO SUCH LABEL FOUND! EXITING...";
+                        return 0;
+                    }
+                } 
             }
         }
         if(!found){
