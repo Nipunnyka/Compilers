@@ -1,0 +1,4 @@
+label: ADD R0 1
+label2: ADD r1 23
+JMP label
+stop: stopnow
