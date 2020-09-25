@@ -16,7 +16,7 @@ cd 2P_assembler && g++ tpa.cpp && ./a.out
 * Assembler have been famously used to convert source program to executable machine code
 * Low Level Assembly code can be directly converted to machine code without many intermediate steps so we will be usin 8085 assembly code in this program to understand the functioning of assemblers
 ![Image of pipeline of compiler](/2P_assembler/images/ss1.png)</br>
-The pipeline of our 2PA is(/2P_assembler/images/ss2.png)</br>
+The pipeline of our 2PA is ![Image](/2P_assembler/images/ss2.png)</br>
 * In the Analysis pass, we identify labels and literals and store them along with theit locations in the symbol and literal table
     * The psuedo-algo for pass 1 is as follow:
     ```
