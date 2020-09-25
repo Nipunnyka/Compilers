@@ -4,7 +4,6 @@
 #define se second
 #define fi first
 
-
 using namespace std;
 
 /*
@@ -119,10 +118,14 @@ string decToBinary(int n)
     while (n > 0) { 
   
         // storing remainder in binary array 
-        c=n%2;
-        num.insert(0, 1, c);
+        int t=n%2;
+        c=t+'0';
+        //cout<<"here: "<<c;
+        num.pb(c);
         n = n / 2; 
     } 
+    
+    reverse(num.begin(), num.end());
     return num;
 } 
 
@@ -242,7 +245,7 @@ int main(){
                     for(auto &sym:SYMBOL_TABLE){
                         if(sym.fi==word){
                             found_sym=true;
-                            outfile<<sym.se;
+                            outfile<<decToBinary(sym.se);
                             break;
                         }
                     }
