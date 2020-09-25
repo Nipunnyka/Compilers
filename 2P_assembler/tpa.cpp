@@ -154,6 +154,7 @@ int main(){
                 Symbol* symbol=new Symbol();
                 word.pop_back();
                 SYMBOL_TABLE.pb(mp(word, ilc+1+base));
+                cout<<"wrote in "<<word<<endl;
             }
         
         }
@@ -192,7 +193,6 @@ int main(){
                 found=true;
                 outfile<<e.bincode<<" ";
                 if(e.format==32){
-                    cout<<"here";
                     infile>>word;
                     r1=word;
                     outfile<<getRegCode(r1)<<" ";
@@ -236,10 +236,11 @@ int main(){
                 } 
                 else if(e.format==00){
                     infile>>word;
+                    cout<<"looking for label "<<word<<endl;
                     bool found_sym=false;
                     //search for the word in symbol table
                     for(auto &sym:SYMBOL_TABLE){
-                        if(sym.fi==e.name){
+                        if(sym.fi==word){
                             found_sym=true;
                             outfile<<sym.se;
                             break;
